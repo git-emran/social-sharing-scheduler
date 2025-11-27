@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "allauth.socialaccount.providers.openid_connect",
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,19 @@ AUTHENTICATION_BACKENDS = [
     # `allauth` specific authentication methods, such as login by email
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     "openid_connect": {
+#         "APPS": [
+#             {
+#                 "provider_id": "linkedin",
+#                 "name": "LinkedIn",
+#                 "client_id": "<insert-id>",
+#                 "secret": "<insert-secret>",
+#                 "settings": {
+#                     "server_url": "https://www.linkedin.com/oauth",
+#                 },
+#             }
+#         ]
+#     }
+# }
