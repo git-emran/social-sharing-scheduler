@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 
 User = settings.AUTH_USER_MODEL
@@ -17,3 +18,11 @@ class Post(models.Model):
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # pre-save
+        if self.share_on_linkedin:
+            print("sharing on linked")
+            self.shared_at_linkedin = timezone.now()
+        super().save(*args, **kwargs)
+        # post-save
