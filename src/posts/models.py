@@ -21,8 +21,14 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         # pre-save
-        if self.share_on_linkedin:
+        if self.share_on_linkedin and self.can_share_on_linkedin:
             print("sharing on linked")
             self.shared_at_linkedin = timezone.now()
+        else:
+            print("not sharing on linkedin")
         super().save(*args, **kwargs)
         # post-save
+
+    @property
+    def can_share_on_linkedin(self):
+        return not self.share_on_linkedin
