@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 
 User = settings.AUTH_USER_MODEL
@@ -18,6 +19,11 @@ class Post(models.Model):
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def clean(self, *args, **kwargs):
+        super().clean(*args, **kwargs)
+        if len(self.content) < 5:
+            raise ValidationError({"content": "This is Invalid"})
 
     def save(self, *args, **kwargs):
         # pre-save
