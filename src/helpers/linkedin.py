@@ -17,7 +17,7 @@ def get_linkedin_user_details(user):
 def get_share_header(linkedin_social):
     tokens = linkedin_social.socialtoken_set.all()
     if not tokens.exists():
-        raise Exception("Linkedin Tokens are invalid")
+        raise UserNotConnectedLinkedin("Linkedin Tokens are invalid")
     social_token = tokens.first()
     return {
         "Authorization": f"Bearer {social_token.token}",

@@ -52,6 +52,8 @@ class Post(models.Model):
     def can_share_on_linkedin(self):
         try:
             linkedin.get_linkedin_user_details(self.user)
+        # except linkedin.UserNotConnectedLinkedin:
+        #     raise ValidationError({"user": "you must connect linkedin before sharing "})
         except Exception as e:
             print(e)
             raise ValidationError({"user": f"{e}"})
