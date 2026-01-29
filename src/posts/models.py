@@ -8,6 +8,11 @@ User = settings.AUTH_USER_MODEL
 print(User)
 
 
+def validate_share(value):
+    if len(value) < 5:
+        raise ValidationError("Content must be longer")
+
+
 # Create your models here.
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -25,7 +30,12 @@ class Post(models.Model):
         if len(self.content) < 5:
             raise ValidationError({"content": "This is Invalid"})
         elif self.share_on_linkedin and not self.can_share_on_linkedin:
-            raise ValidationError({"content": "Content already shared on linkedin"})
+            raise ValidationError(
+                {
+                    "content": f"Content already shared on linkedin at {self.shared_at_linkedin}.",
+                    "share_on_linkedin": "Content already shared on linkedin",
+                }
+            )
 
     def save(self, *args, **kwargs):
         # pre-save
