@@ -2,6 +2,10 @@ from django.contrib.auth import get_user_model
 import requests
 
 
+class UserNotConnectedLinkedin(Exception):
+    pass
+
+
 def get_linkedin_user_details(user):
     try:
         linkedin_social = user.socialaccount_set.get(provider="linkedin")

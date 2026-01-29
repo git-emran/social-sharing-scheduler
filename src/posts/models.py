@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from helpers import linkedin
 
 
 User = settings.AUTH_USER_MODEL
@@ -49,4 +50,11 @@ class Post(models.Model):
 
     @property
     def can_share_on_linkedin(self):
+        try:
+            linkedin.get_linkedin_user_details(self.user)
+        except Exception as e:
+            print(e)
+            raise ValidationError({"user": f"{e}"})
+            # return False
+
         return not self.share_on_linkedin
