@@ -41,7 +41,12 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         # pre-save
         if self.share_on_linkedin and self.can_share_on_linkedin:
-            print("sharing on linked")
+            print("sharing on linkedin")
+            try:
+                linkedin.post_to_linkedin(self.user, self.content)
+            except:
+                raise ValidationError({"content": "couldnot share to linkedin"})
+
             self.shared_at_linkedin = timezone.now()
         else:
             print("not sharing on linkedin")
@@ -52,8 +57,8 @@ class Post(models.Model):
     def can_share_on_linkedin(self):
         try:
             linkedin.get_linkedin_user_details(self.user)
-        # except linkedin.UserNotConnectedLinkedin:
-        #     raise ValidationError({"user": "you must connect linkedin before sharing "})
+        except linkedin.UserNotConnectedLinkedin:
+            raise ValidationError({"user": "you must connect linkedin before sharing "})
         except Exception as e:
             print(e)
             raise ValidationError({"user": f"{e}"})
